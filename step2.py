@@ -1,14 +1,56 @@
+import copy
+
 def rotateU(cube, di):
-    pass
-
-def rotateR(cube, di):
-    pass
-
-def rotateL(cube, di):
-    pass
+    candidate = copy.deepcopy(cube)
+    length = len(cube)
+    if di == "U":
+        for i in range(length):
+            idx = (i-1)%length
+            candidate[0][idx] = cube[0][i]
+    else:
+        for i in range(length):
+            idx = (i+1)%length
+            candidate[0][idx] = cube[0][i]
+    return candidate
 
 def rotateB(cube, di):
-    pass
+    candidate = copy.deepcopy(cube)
+    length = len(cube)
+    if di == "B":
+        for i in range(length):
+            idx = (i+1)%length
+            candidate[2][idx] = cube[2][i]
+    else:
+        for i in range(length):
+            idx = (i-1)%length
+            candidate[2][idx] = cube[2][i]
+    return candidate
+
+def rotateR(cube, di):
+    candidate = copy.deepcopy(cube)
+    length = len(cube)
+    if di == "R":
+        for i in range(length):
+            idx = (i-1)%length
+            candidate[idx][2] = cube[i][2]
+    else:
+        for i in range(length):
+            idx = (i+1)%length
+            candidate[idx][2] = cube[i][2]
+    return candidate
+
+def rotateL(cube, di):
+    candidate = copy.deepcopy(cube)
+    length = len(cube)
+    if di == "L":
+        for i in range(length):
+            idx = (i+1)%length
+            candidate[idx][0] = cube[i][0]
+    else:
+        for i in range(length):
+            idx = (i-1)%length
+            candidate[idx][0] = cube[i][0]
+    return candidate
 
 # cube의 현재 상태를 나타내는 함수
 def stateCube(cube, di):
@@ -20,7 +62,7 @@ def stateCube(cube, di):
     [print(" ".join(i)) for i in cube]
     print()
 
-# direction을 확인하는 함수
+# 큐브 돌릴 방향을 확인하는 함수
 def checkDirection(direction, cube):
     for di in direction:
         if di in ("U","u"):
@@ -36,6 +78,7 @@ def checkDirection(direction, cube):
 
         stateCube(cube, di)
     return cube
+
         
 # direction을 반복문으로 돌리기 쉽게 '포함한 대문자를 소문자로 변경
 def modifyDirection(direction):
