@@ -28,7 +28,8 @@ def main():
     try:
         n, direction = int(n), direction.upper()
     except:
-        return "n의 값을 정수로 적어주세요(-100이상 99이하)"
+        print("n의 값을 정수로 적어주세요(-100이상 99이하)")
+        exit(0)
     length = len(word)
 
     # direction이 L혹은 R이 아니라면 에러처리
