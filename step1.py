@@ -20,8 +20,6 @@ def checkDirection(word, n, direction, length):
         return rotateL(word, n, length)
     elif direction == "R":
         return rotateR(word, n, length)
-    else:
-        return "잘못된 입력입니다."
 
 def main():
     # 입력받기
@@ -30,15 +28,17 @@ def main():
     try:
         n, direction = int(n), direction.upper()
     except:
-        return "잘못된 입력입니다."
+        return "n의 값을 정수로 적어주세요(-100이상 99이하)"
     length = len(word)
 
     # direction이 L혹은 R이 아니라면 에러처리
     if "L" != direction and "R" != direction:
-        word = "잘못된 입력입니다."
+        word = "direction값을 L혹은 R을 입력해주세요(소문자도 가능)"
     # n이 0이 아닌것들만 checkDirection함수를 통해 word값 다시 받아오기 0이라면 원모습 그대로 출력
-    elif n != 0:
+    elif -100 <= n < 100:
         word = checkDirection(word, n, direction, length)
+    else:
+        word = "n의 값을 -100이상 99이하로 입력해주세요."
     return word
 
 if __name__ == "__main__":
