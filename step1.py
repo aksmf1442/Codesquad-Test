@@ -39,7 +39,8 @@ def main():
         word = checkDirection(word, n, direction, length)
     else:
         word = "n의 값을 -100이상 99이하로 입력해주세요."
-    return word
+    
+    print(word)
 
 if __name__ == "__main__":
-	print(main())
+	main()
