@@ -1,5 +1,27 @@
+# direction이 l일때 함수
+def rotateL(word, n, length):
+    candidate = ["" for _ in range(length)]
+    for i in range(length):
+        idx = (i+n)%length
+        candidate[i] = word[idx]
+    return "".join(candidate)
+
+# direction이 r일때 함수
+def rotateR(word, n, length):
+    candidate = ["" for _ in range(length)]
+    for i in range(length):
+        idx = (i-n)%length
+        candidate[i] = word[idx]
+    return "".join(candidate)
+
+# direction이 l인지 r인지 확인하고 l이면 lDirection에서 r이면 rDirection에서 값 가져오기
 def checkDirection(word, n, direction, length):
-    pass
+    if direction == "L":
+        return rotateL(word, n, length)
+    elif direction == "R":
+        return rotateR(word, n, length)
+    else:
+        return "잘못된 입력입니다."
 
 def main():
     # 입력받기
