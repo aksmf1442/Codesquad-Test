@@ -1,5 +1,133 @@
 import copy, time, datetime, random
 
+# 큐브의 한 면을 270도로 회전
+def rotate270(cube):
+    n = len(cube)
+    candidate = [[0] * n for _ in range(n)]
+
+    for x in range(n):
+        for y in range(n):
+            candidate[n-1-y][x] = cube[x][y]
+    return candidate
+
+# 큐브의 한 면을 90도로 회전
+def rotate90(cube):
+    n = len(cube)
+    candidate = [[0] * n for _ in range(n)]
+
+    for x in range(n):
+        for y in range(n):
+            candidate[y][n-1-x] = cube[x][y]
+    return candidate
+
+# U or U' 회전함수
+def rotateU(cube, d):
+    candidate = copy.deepcopy(cube)
+    x, y = [2,3,4,1], [4,1,2,3]
+
+    if d == "U":
+        for idx in range(4):
+            candidate[idx+1][0] = cube[x[idx]][0]
+        candidate[0] = rotate90(cube[0])
+    else:
+        for idx in range(4):
+            candidate[idx+1][0] = cube[y[idx]][0]
+        candidate[0] = rotate270(cube[0])
+
+    return candidate
+
+# D or D 회전함수
+def rotateD(cube, d):
+    candidate = copy.deepcopy(cube)
+    x, y =[2,3,4,1], [4,1,2,3]
+
+    if d == "D":
+        for idx in range(4):
+            candidate[idx+1][2] = cube[y[idx]][2]
+        candidate[5] = rotate90(cube[5])
+    else:
+        for idx in range(4):
+            candidate[idx+1][2] = cube[x[idx]][2]
+        candidate[5] = rotate270(cube[5])
+    return candidate
+
+# F or F' 회전함수 (3,5), (1,0) 연결할 때 반대로 넣어야해서 3-i-1을 사용
+def rotateF(cube, d):
+    candidate = copy.deepcopy(cube)
+    if d == "F":
+        for i in range(3):
+            candidate[0][2][3-i-1] = cube[1][i][2]
+            candidate[3][i][0] = cube[0][2][i]
+            candidate[5][0][3-i-1] = cube[3][i][0]
+            candidate[1][i][2] = cube[5][0][i]
+        candidate[2] = rotate90(cube[2])
+    else:
+        for i in range(3):
+            candidate[0][2][i] = cube[3][i][0]
+            candidate[3][3-i-1][0] = cube[5][0][i]
+            candidate[5][0][i] = cube[1][i][2]
+            candidate[1][3-i-1][2] = cube[0][2][i]
+        candidate[2] = rotate270(cube[2])
+    return candidate
+
+# B or B' 회전함수 (3,5), (1,0) 연결할 때 반대로 넣어야해서 3-i-1을 사용
+def rotateB(cube, d):
+    candidate = copy.deepcopy(cube)
+    if d == "B":
+        for i in range(3):
+            candidate[0][0][i] = cube[3][i][2]
+            candidate[3][3-i-1][2] = cube[5][2][i]
+            candidate[5][2][i] = cube[1][i][0]
+            candidate[1][3-i-1][0] = cube[0][0][i]
+        candidate[4] = rotate90(cube[4])
+    else:
+        for i in range(3):
+            candidate[0][0][3-i-1] = cube[1][i][0]
+            candidate[3][i][2] = cube[0][0][i]
+            candidate[5][2][3-i-1] = cube[3][i][2]
+            candidate[1][i][0] = cube[5][2][i]
+        candidate[4] = rotate270(cube[4])
+            
+    return candidate    
+
+# R or R' 회전함수 (0,4), (4,5) 연결할 때 반대로 넣어야해서 3-i-1을 사용
+def rotateR(cube, d):
+    candidate = copy.deepcopy(cube)
+    if d == "R":
+        for i in range(3):
+            candidate[0][i][2] = cube[2][i][2]
+            candidate[4][3-i-1][0] = cube[0][i][2]
+            candidate[5][3-i-1][2] = cube[4][i][0]
+            candidate[2][i][2] = cube[5][i][2]
+        candidate[3] = rotate90(cube[3])
+    else:
+        for i in range(3):
+            candidate[0][3-i-1][2] = cube[4][i][0]
+            candidate[4][3-i-1][0] = cube[5][i][2]
+            candidate[5][i][2] = cube[2][i][2]
+            candidate[2][i][2] = cube[0][i][2]
+        candidate[3] = rotate270(cube[3])
+    return candidate
+
+# L or L' 회전함수 (0,4), (4,5) 연결할 때 반대로 넣어야해서 3-i-1을 사용
+def rotateL(cube, d):
+    candidate = copy.deepcopy(cube)
+    if d == "L":
+        for i in range(3):
+            candidate[0][3-i-1][0] = cube[4][i][2]
+            candidate[2][i][0] = cube[0][i][0]
+            candidate[5][i][0] = cube[2][i][0]
+            candidate[4][3-i-1][2] = cube[5][i][0]
+        candidate[1] = rotate90(cube[1])
+    else:
+        for i in range(3):
+            candidate[0][i][0] = cube[2][i][0]
+            candidate[2][i][0] = cube[5][i][0]
+            candidate[5][3-i-1][0] = cube[4][i][2]
+            candidate[4][3-i-1][2] = cube[0][i][0]
+        candidate[1] = rotate270(cube[1])
+    return candidate
+
 # direction출력 함수
 def printDirection(cube, di):
     if di != di.upper():
